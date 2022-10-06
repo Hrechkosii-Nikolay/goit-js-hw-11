@@ -10,9 +10,7 @@ const refs = {
 
 refs.loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
 refs.form.addEventListener('submit', submitForm);
-refs.input.addEventListener('input', () => {
-  options.params.page = 1;
-});
+refs.input.addEventListener('input', resetNumberPage);
 
 let totalCountPictures = 0;
 
@@ -32,7 +30,8 @@ function onLoadMoreBtnClick(e) {
 
   fetchPic(refs.input.value.trim())
     .then(res => markup(res))
-    .then(makeMarkup);
+    .then(makeMarkup)
+    .catch(error => console.log(error));
 }
 
 async function fetchPic(name) {
@@ -54,7 +53,8 @@ async function submitForm(e) {
   }
   await fetchPic(refs.input.value.trim())
     .then(res => markup(res))
-    .then(makeMarkup);
+    .then(makeMarkup)
+    .catch(error => console.log(error));
 }
 
 function markup(pictures) {
@@ -104,4 +104,8 @@ function markup(pictures) {
 
 function makeMarkup(result) {
   refs.gallery.insertAdjacentHTML('beforeend', result);
+}
+
+function resetNumberPage() {
+  options.params.page = 1;
 }
